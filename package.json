@@ -1,8 +1,8 @@
 {
 	"name": "vscode-markdown",
-	"displayName": "VS Code Markdown",
+	"displayName": "VS Code Backlog wiki",
 	"description": "Markdown for VS Code",
-	"version": "0.2.0",
+	"version": "0.0.1",
 	"publisher": "Microsoft",
 	"aiKey": "AIF-d9b70cd4-b9f9-4d70-929b-a071c400b217",
 	"engines": {
@@ -306,6 +306,9 @@
 		]
 	},
 	"scripts": {
+		"compile": "gulp compile --max_old_space_size=4096",
+		"clean": "gulp clean --max_old_space_size=4096",
+		"tslint": "gulp tslint --max_old_space_size=4096",
 		"vscode:prepublish": "node ../../node_modules/gulp/bin/gulp.js --gulpfile ../../build/gulpfile.extensions.js compile-extension:markdown ./tsconfig.json",
 		"update-grammar": "node ../../node_modules/gulp/bin/gulp.js --gulpfile ./syntaxes/gulpfile.js"
 	},
@@ -314,13 +317,24 @@
 		"markdown-it": "^8.4.0",
 		"markdown-it-named-headers": "0.0.4",
 		"vscode-extension-telemetry": "^0.0.8",
-		"vscode-nls": "^2.0.2"
+		"vscode-nls": "^2.0.2",
+		"vscode": "^1.1.10"
 	},
 	"devDependencies": {
 		"@types/highlight.js": "9.1.10",
 		"@types/markdown-it": "0.0.2",
 		"@types/node": "7.0.43",
-		"gulp-rename": "^1.2.2",
-		"gulp-replace": "^0.5.4"
+		"glob": "^5.0.13",
+		"gulp": "^3.9.1",
+		"gulp-tsb": "2.0.5",
+		"gulp-tslint": "^8.1.2",
+		"gulp-filter": "^3.0.0",
+		"event-stream": "^3.1.7",
+		"rimraf": "^2.2.8",
+		"tslint": "^5.8.0",
+		"typescript": "2.6.1",
+		"vinyl-fs": "^2.4.3",
+		"vsce": "1.33.2",
+		"source-map": "^0.4.4"
 	}
 }
