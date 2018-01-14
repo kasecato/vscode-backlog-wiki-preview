@@ -25,7 +25,7 @@ export function activate(context: vscode.ExtensionContext) {
 	const engine = new MarkdownEngine();
 	const logger = new Logger();
 
-	const selector = 'markdown';
+	const selector = 'backlog';
 
 	const contentProvider = new MDDocumentContentProvider(engine, context, cspArbiter, logger);
 	context.subscriptions.push(vscode.workspace.registerTextDocumentContentProvider(MDDocumentContentProvider.scheme, contentProvider));

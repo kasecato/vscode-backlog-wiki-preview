@@ -241,7 +241,7 @@
 		const offset = event.pageY;
 		const line = getEditorLineNumberForPageOffset(offset);
 		if (!isNaN(line)) {
-			postMessage('_markdown.didClick', [settings.source, line]);
+			postMessage('_backlog.didClick', [settings.source, line]);
 		}
 	});
 
@@ -261,7 +261,7 @@
 				}
 				if (node.href.startsWith('file://')) {
 					const [path, fragment] = node.href.replace(/^file:\/\//i, '').split('#');
-					postMessage('_markdown.openDocumentLink', { path, fragment });
+					postMessage('_backlog.openDocumentLink', { path, fragment });
 					event.preventDefault();
 					event.stopPropagation();
 					break;
@@ -279,7 +279,7 @@
 			} else {
 				const line = getEditorLineNumberForPageOffset(window.scrollY);
 				if (!isNaN(line)) {
-					postMessage('_markdown.revealLine', [settings.source, line]);
+					postMessage('_backlog.revealLine', [settings.source, line]);
 				}
 			}
 		}, 50));

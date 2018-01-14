@@ -39,7 +39,7 @@ function tryLoadMarkdownItPlugins(
 	extension: vscode.Extension<any>,
 	engine: MarkdownEngine
 ) {
-	if (contributes['markdown.markdownItPlugins']) {
+	if (contributes['backlog.markdownItPlugins']) {
 		extension.activate().then(() => {
 			if (extension.exports && extension.exports.extendMarkdownIt) {
 				engine.addPlugin((md: any) => extension.exports.extendMarkdownIt(md));
@@ -53,7 +53,7 @@ function tryLoadPreviewScripts(
 	contentProvider: MDDocumentContentProvider,
 	extension: vscode.Extension<any>
 ) {
-	const scripts = contributes['markdown.previewScripts'];
+	const scripts = contributes['backlog.previewScripts'];
 	if (scripts && Array.isArray(scripts)) {
 		for (const script of scripts) {
 			try {
@@ -71,7 +71,7 @@ function tryLoadPreviewStyles(
 	contentProvider: MDDocumentContentProvider,
 	extension: vscode.Extension<any>
 ) {
-	const styles = contributes['markdown.previewStyles'];
+	const styles = contributes['backlog.previewStyles'];
 	if (styles && Array.isArray(styles)) {
 		for (const style of styles) {
 			try {

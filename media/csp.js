@@ -25,7 +25,7 @@
 
 		notification.setAttribute('role', 'button');
 		notification.setAttribute('aria-label',  strings.cspAlertMessageLabel);
-		notification.setAttribute('href', `command:markdown.showPreviewSecuritySelector?${encodeURIComponent(JSON.stringify(args))}`);
+		notification.setAttribute('href', `command:backlog.showPreviewSecuritySelector?${encodeURIComponent(JSON.stringify(args))}`);
 
 		document.body.appendChild(notification);
 	};

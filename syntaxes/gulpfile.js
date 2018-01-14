@@ -148,10 +148,10 @@ const fencedCodeBlockIncludes = () =>
 
 
 gulp.task('default', function () {
-	gulp.src(['markdown.tmLanguage.base'])
+	gulp.src(['backlog.tmLanguage.base'])
 		.pipe(replace('{{languageIncludes}}', indent(4, fencedCodeBlockIncludes())))
 		.pipe(replace('{{languageDefinitions}}', indent(4, fencedCodeBlockDefinitions())))
-		.pipe(rename('markdown.tmLanguage'))
+		.pipe(rename('backlog.tmLanguage'))
 		.pipe(gulp.dest('.'));
 });
 

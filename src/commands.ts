@@ -55,7 +55,7 @@ function showPreview(
 	if (!(resource instanceof vscode.Uri)) {
 		if (!vscode.window.activeTextEditor) {
 			// this is most likely toggling the preview
-			return vscode.commands.executeCommand('markdown.showSource');
+			return vscode.commands.executeCommand('backlog.showSource');
 		}
 		// nothing found that could be shown or toggled
 		return;
@@ -79,7 +79,7 @@ function showPreview(
 }
 
 export class ShowPreviewCommand implements Command {
-	public readonly id = 'markdown.showPreview';
+	public readonly id = 'backlog.showPreview';
 
 	public constructor(
 		private readonly cspArbiter: ExtensionContentSecurityPolicyArbiter,
@@ -92,7 +92,7 @@ export class ShowPreviewCommand implements Command {
 }
 
 export class ShowPreviewToSideCommand implements Command {
-	public readonly id = 'markdown.showPreviewToSide';
+	public readonly id = 'backlog.showPreviewToSide';
 
 	public constructor(
 		private readonly cspArbiter: ExtensionContentSecurityPolicyArbiter,
@@ -105,7 +105,7 @@ export class ShowPreviewToSideCommand implements Command {
 }
 
 export class ShowSourceCommand implements Command {
-	public readonly id = 'markdown.showSource';
+	public readonly id = 'backlog.showSource';
 
 	public execute(mdUri?: vscode.Uri) {
 		if (!mdUri) {
@@ -125,7 +125,7 @@ export class ShowSourceCommand implements Command {
 }
 
 export class RefreshPreviewCommand implements Command {
-	public readonly id = 'markdown.refreshPreview';
+	public readonly id = 'backlog.refreshPreview';
 
 	public constructor(
 		private readonly contentProvider: MDDocumentContentProvider
@@ -149,7 +149,7 @@ export class RefreshPreviewCommand implements Command {
 }
 
 export class ShowPreviewSecuritySelectorCommand implements Command {
-	public readonly id = 'markdown.showPreviewSecuritySelector';
+	public readonly id = 'backlog.showPreviewSecuritySelector';
 
 	public constructor(
 		private readonly previewSecuritySelector: PreviewSecuritySelector
@@ -168,7 +168,7 @@ export class ShowPreviewSecuritySelectorCommand implements Command {
 }
 
 export class RevealLineCommand implements Command {
-	public readonly id = '_markdown.revealLine';
+	public readonly id = '_backlog.revealLine';
 
 	public constructor(
 		private logger: Logger
@@ -193,7 +193,7 @@ export class RevealLineCommand implements Command {
 }
 
 export class DidClickCommand implements Command {
-	public readonly id = '_markdown.didClick';
+	public readonly id = '_backlog.didClick';
 
 	public execute(uri: string, line: number) {
 		const sourceUri = vscode.Uri.parse(decodeURIComponent(uri));
@@ -213,7 +213,7 @@ export class DidClickCommand implements Command {
 }
 
 export class MoveCursorToPositionCommand implements Command {
-	public readonly id = '_markdown.moveCursorToPosition';
+	public readonly id = '_backlog.moveCursorToPosition';
 
 	public execute(line: number, character: number) {
 		if (!vscode.window.activeTextEditor) {
@@ -227,7 +227,7 @@ export class MoveCursorToPositionCommand implements Command {
 }
 
 export class OnPreviewStyleLoadErrorCommand implements Command {
-	public readonly id = '_markdown.onPreviewStyleLoadError';
+	public readonly id = '_backlog.onPreviewStyleLoadError';
 
 	public execute(resources: string[]) {
 		vscode.window.showWarningMessage(localize('onPreviewStyleLoadError', "Could not load 'markdown.styles': {0}", resources.join(', ')));
@@ -240,7 +240,7 @@ export interface OpenDocumentLinkArgs {
 }
 
 export class OpenDocumentLinkCommand implements Command {
-	private static readonly id = '_markdown.openDocumentLink';
+	private static readonly id = '_backlog.openDocumentLink';
 	public readonly id = OpenDocumentLinkCommand.id;
 
 	public static createCommandUri(

@@ -30,7 +30,7 @@
 		const args = [unloadedStyles];
 		window.parent.postMessage({
 			command: 'did-click-link',
-			data: `command:_markdown.onPreviewStyleLoadError?${encodeURIComponent(JSON.stringify(args))}`
+			data: `command:_backlog.onPreviewStyleLoadError?${encodeURIComponent(JSON.stringify(args))}`
 		}, 'file://');
 	});
 }());

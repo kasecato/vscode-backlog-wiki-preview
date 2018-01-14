@@ -32,6 +32,7 @@ const tasks = compilations.map(function (tsconfigFile) {
 	const clean = 'clean-extension:' + name;
 	const tslint = 'tslint-extension:' + name;
 	const compile = 'compile-extension:' + name;
+	const watch = 'watch-extension:' + name;
 
 	const srcBase = 'src';
 	const src = path.join(srcBase, '**');
@@ -74,7 +75,7 @@ const tasks = compilations.map(function (tsconfigFile) {
 			.pipe(gulptslint.report(options));
 	});
 
-	gulp.task(compile, [clean, tslint], () => {
+	gulp.task(compile, [clean], () => {
 		const pipeline = createPipeline(false);
 		const input = gulp.src(src, srcOpts);
 
@@ -83,13 +84,19 @@ const tasks = compilations.map(function (tsconfigFile) {
 			.pipe(gulp.dest(out));
 	});
 
+	gulp.task(watch, [], () => {
+		gulp.watch(src, [compile]);
+	});
+
 	return {
 		clean: clean,
 		tslint: tslint,
-		compile: compile
+		compile: compile,
+		watch: watch
 	};
 });
 
 gulp.task('clean', tasks.map(t => t.clean));
 gulp.task('tslint', tasks.map(t => t.tslint));
 gulp.task('compile', tasks.map(t => t.compile));
+gulp.task('watch', tasks.map(t => t.watch));
