@@ -1,0 +1,394 @@
+{
+	"version": "1.0",
+	"fileTypes": [
+		"bl",
+		"biki",
+		"backlog"
+	],
+	"keyEquivalent": "^~B",
+	"name": "Backlog",
+	"patterns": [
+		{
+			"include": "#backlog"
+		}
+	],
+	"repository": {
+		"backlog": {
+			"patterns": [
+				{
+					"include": "#italic"
+				},
+				{
+					"include": "#bold"
+				},
+				{
+					"include": "#strike"
+				},
+				{
+					"include": "#colors"
+				},
+				{
+					"include": "#urls"
+				},
+				{
+					"include": "#header"
+				},
+				{
+					"include": "#lists"
+				},
+				{
+					"include": "#quotes"
+				},
+				{
+					"include": "#code"
+				},
+				{
+					"include": "#link_to_a_subversion_revision"
+				},
+				{
+					"include": "#link_to_a_git_revision"
+				},
+				{
+					"include": "#table_of_contents"
+				},
+				{
+					"include": "#break"
+				},
+				{
+					"include": "#cacoo_diagram"
+				},
+				{
+					"include": "#images"
+				},
+				{
+					"include": "#thumbnails"
+				},
+				{
+					"include": "#attached_file"
+				},
+				{
+					"include": "#escape"
+				}
+			]
+		},
+		"italic": {
+			"name": "markup.italic.backlog",
+			"begin": "[']{3}",
+			"beginCaptures": {
+				"0": {
+					"name": "beginning.punctuation.definition.italic.backlog"
+				}
+			},
+			"end": "[']{3}",
+			"endCaptures": {
+				"0": {
+					"name": "ending.punctuation.definition.italic.backlog"
+				}
+			}
+		},
+		"bold": {
+			"name": "markup.bold.backlog",
+			"begin": "[']{2}",
+			"beginCaptures": {
+				"0": {
+					"name": "beginning.punctuation.definition.bold.backlog"
+				}
+			},
+			"end": "[']{2}",
+			"endCaptures": {
+				"0": {
+					"name": "ending.punctuation.definition.bold.backlog"
+				}
+			}
+		},
+		"strike": {
+			"name": "markup.bold.strike.backlog",
+			"comment": "Currently does not support strike",
+			"begin": "[%]{2}",
+			"beginCaptures": {
+				"0": {
+					"name": "beginning.punctuation.definition.strike.backlog"
+				}
+			},
+			"end": "[%]{2}",
+			"endCaptures": {
+				"0": {
+					"name": "ending.punctuation.definition.strike.backlog"
+				}
+			}
+		},
+		"colors": {
+			"patterns": [
+				{
+					"name": "constant.other.color.w3c-standard-color-name.backlog",
+					"match": "&color\\([ \t]*(?i)(?:aqua|black|blue|fuchsia|gray|green|lime|maroon|navy|olive|orange|purple|red|silver|teal|white|yellow)[ \t]*\\)[ \t]*\\{.*?\\}",
+					"captures": {
+						"0": {
+							"name": "punctuation.definition.constant.backlog"
+						}
+					}
+				},
+				{
+					"name": "constant.other.color.rgb-value.hex.backlog",
+					"match": "&color\\([ \t]*(#)(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})[ \t]*\\)[ \t]*\\{.*?\\}",
+					"captures": {
+						"0": {
+							"name": "punctuation.definition.constant.backlog"
+						}
+					}
+				}
+			]
+		},
+		"urls": {
+			"patterns": [
+				{
+					"name": "meta.link.inline.backlog",
+					"match": "\\[\\[(.*?)([>:])((https?|ftp)://.*?)\\]\\]",
+					"captures": {
+						"1": {
+							"name": "string.other.link.description.title.backlog"
+						},
+						"3": {
+							"name": "markup.underline.link.backlog"
+						}
+					}
+				},
+				{
+					"name": "meta.link.inet.backlog",
+					"match": "((https?|ftp)://\\S+)",
+					"captures": {
+						"1": {
+							"name": "markup.underline.link.backlog"
+						}
+					}
+				}
+			]
+		},
+		"header": {
+			"name": "markup.heading.backlog",
+			"begin": "^\\*{1,6}",
+			"beginCaptures": {
+				"0": {
+					"name": "beginning.punctuation.definition.heading.backlog"
+				}
+			},
+			"end": "(\\*{1,6})?$\n?",
+			"endCaptures": {
+				"1": {
+					"name": "ending.punctuation.definition.heading.backlog"
+				}
+			},
+			"contentName": "entity.name.section.backlog"
+		},
+		"lists": {
+			"patterns": [
+				{
+					"name": "markup.list.unnumbered.backlog",
+					"match": "^[-]+",
+					"captures": {
+						"0": {
+							"name": "punctuation.definition.list.backlog"
+						}
+					}
+				},
+				{
+					"name": "markup.list.numbered.backlog",
+					"match": "^[+]+",
+					"captures": {
+						"0": {
+							"name": "punctuation.definition.list.backlog"
+						}
+					}
+				}
+			]
+		},
+		"quotes": {
+			"patterns": [
+				{
+					"name": "markup.quote.nonblock.backlog",
+					"match": "^[>].*$\n?",
+					"captures": {
+						"0": {
+							"name": "beginning.punctuation.definition.quote.backlog"
+						}
+					}
+				},
+				{
+					"name": "markup.quote.block.backlog",
+					"begin": "^\\{quote\\}$",
+					"beginCaptures": {
+						"0": {
+							"name": "beginning.punctuation.definition.quote.backlog"
+						}
+					},
+					"end": "^\\{/quote\\}$",
+					"endCaptures": {
+						"0": {
+							"name": "ending.punctuation.definition.quote.backlog"
+						}
+					}
+				}
+			]
+		},
+		"code": {
+			"name": "markup.fenced_code.block.backlog",
+			"begin": "^\\{code\\}$",
+			"beginCaptures": {
+				"0": {
+					"name": "markup.quote.block.backlog"
+				}
+			},
+			"end": "^\\{/code\\}$",
+			"endCaptures": {
+				"0": {
+					"name": "markup.quote.block.backlog"
+				}
+			}
+		},
+		"link_to_a_subversion_revision": {
+			"name": "meta.link.subversion.backlog",
+			"match": "#rev\\([0-9]+\\)",
+			"captures": {
+				"0": {
+					"name": "markup.underline.link.backlog"
+				}
+			}
+		},
+		"link_to_a_git_revision": {
+			"name": "meta.link.git.backlog",
+			"match": "#rev\\([a-zA-Z0-9.-]+:[a-fA-F0-9]{10}\\)",
+			"captures": {
+				"0": {
+					"name": "markup.underline.link.backlog"
+				}
+			}
+		},
+		"table_of_contents": {
+			"name": "markup.quote.contents.backlog",
+			"match": "^#contents$",
+			"captures": {
+				"0": {
+					"name": "punctuation.definition.contents.backlog"
+				}
+			}
+		},
+		"break": {
+			"name": "markup.quote.break.backlog",
+			"match": "&br;",
+			"captures": {
+				"0": {
+					"name": "punctuation.definition.break.backlog"
+				}
+			}
+		},
+		"cacoo_diagram": {
+			"patterns": [
+				{
+					"name": "meta.link.cacoo.backlog",
+					"match": "#cacoo\\(\\S+?,[0-9]+,[0-9]+\\)",
+					"captures": {
+						"0": {
+							"name": "markup.underline.link.backlog"
+						}
+					}
+				},
+				{
+					"name": "meta.link.cacoo.theme.backlog",
+					"match": "#cacoo\\(\\S+?,[0-9]+,[0-9]+,\\S+?\\)",
+					"captures": {
+						"0": {
+							"name": "markup.underline.link.backlog"
+						}
+					}
+				},
+				{
+					"name": "meta.link.cacoo.sheet.backlog",
+					"match": "#cacoo\\(\\S+?,[0-9]+,[0-9]+,\\S+?,[0-9]+\\)",
+					"captures": {
+						"0": {
+							"name": "markup.underline.link.backlog"
+						}
+					}
+				}
+			]
+		},
+		"images": {
+			"patterns": [
+				{
+					"name": "meta.link.image.other.website.backlog",
+					"match": "#image\\(https?://\\S+?\\)",
+					"captures": {
+						"0": {
+							"name": "markup.underline.link.backlog"
+						}
+					}
+				},
+				{
+					"name": "meta.link.image.attached.number.backlog",
+					"match": "#image\\([0-9]+\\)",
+					"captures": {
+						"0": {
+							"name": "markup.underline.link.backlog"
+						}
+					}
+				},
+				{
+					"name": "meta.link.image.attaced.name.backlog",
+					"match": "#image\\(\\S+?\\)",
+					"captures": {
+						"0": {
+							"name": "markup.underline.link.backlog"
+						}
+					}
+				}
+			]
+		},
+		"thumbnails": {
+			"patterns": [
+				{
+					"name": "meta.link.thumbnail.other.website.backlog",
+					"match": "#thumbnail\\(https?://\\S+?\\)",
+					"captures": {
+						"0": {
+							"name": "markup.underline.link.backlog"
+						}
+					}
+				},
+				{
+					"name": "meta.link.thumbnail.attached.number.backlog",
+					"match": "#thumbnail\\([0-9]+\\)",
+					"captures": {
+						"0": {
+							"name": "markup.underline.link.backlog"
+						}
+					}
+				},
+				{
+					"name": "meta.link.thumbnail.attaced.name.backlog",
+					"match": "#thumbnail\\(\\S+?\\)",
+					"captures": {
+						"0": {
+							"name": "markup.underline.link.backlog"
+						}
+					}
+				}
+			]
+		},
+		"attached_file": {
+			"name": "meta.link.thumbnail.other.website.backlog",
+			"match": "#attach\\([\\s\\S]+?:[0-9]+\\)",
+			"captures": {
+				"0": {
+					"name": "markup.underline.link.backlog"
+				}
+			}
+		},
+		"escape": {
+			"name": "constant.character.escape.backlog",
+			"match": "\\\\",
+			"comment": "TODO: disable syntax when escape is used"
+		}
+	},
+	"scopeName": "text.html.backlog",
+	"uuid": "bbb300a8-f5e8-41bb-86f0-6f3288a2099a"
+}
