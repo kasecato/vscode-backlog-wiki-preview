@@ -8,6 +8,7 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { MarkdownEngine } from '../markdownEngine';
+import { BacklogEngine } from '../backlogEngine';
 
 import * as nls from 'vscode-nls';
 import { Logger } from '../logger';
@@ -20,12 +21,12 @@ const previewStrings = {
 	cspAlertMessageLabel: localize('preview.securityMessage.label', 'Content Disabled Security Warning')
 };
 
-export function isMarkdownFile(document: vscode.TextDocument) {
-	return document.languageId === 'markdown'
+export function isBacklogFile(document: vscode.TextDocument) {
+	return document.languageId === 'backlog'
 		&& document.uri.scheme !== MDDocumentContentProvider.scheme; // prevent processing of own documents
 }
 
-export function getMarkdownUri(uri: vscode.Uri) {
+export function getBacklogUri(uri: vscode.Uri) {
 	if (uri.scheme === MDDocumentContentProvider.scheme) {
 		return uri;
 	}
@@ -37,9 +38,9 @@ export function getMarkdownUri(uri: vscode.Uri) {
 	});
 }
 
-class MarkdownPreviewConfig {
+class BacklogPreviewConfig {
 	public static getConfigForResource(resource: vscode.Uri) {
-		return new MarkdownPreviewConfig(resource);
+		return new BacklogPreviewConfig(resource);
 	}
 
 	public readonly scrollBeyondLastLine: boolean;
@@ -58,31 +59,31 @@ class MarkdownPreviewConfig {
 
 	private constructor(resource: vscode.Uri) {
 		const editorConfig = vscode.workspace.getConfiguration('editor', resource);
-		const markdownConfig = vscode.workspace.getConfiguration('markdown', resource);
-		const markdownEditorConfig = vscode.workspace.getConfiguration('[markdown]');
+		const backlogConfig = vscode.workspace.getConfiguration('backlog', resource);
+		const backlogEditorConfig = vscode.workspace.getConfiguration('[backlog]');
 
 		this.scrollBeyondLastLine = editorConfig.get<boolean>('scrollBeyondLastLine', false);
 
 		this.wordWrap = editorConfig.get<string>('wordWrap', 'off') !== 'off';
-		if (markdownEditorConfig && markdownEditorConfig['editor.wordWrap']) {
-			this.wordWrap = markdownEditorConfig['editor.wordWrap'] !== 'off';
+		if (backlogEditorConfig && backlogEditorConfig['editor.wordWrap']) {
+			this.wordWrap = backlogEditorConfig['editor.wordWrap'] !== 'off';
 		}
 
-		this.previewFrontMatter = markdownConfig.get<string>('previewFrontMatter', 'hide');
-		this.scrollPreviewWithEditorSelection = !!markdownConfig.get<boolean>('preview.scrollPreviewWithEditorSelection', true);
-		this.scrollEditorWithPreview = !!markdownConfig.get<boolean>('preview.scrollEditorWithPreview', true);
-		this.lineBreaks = !!markdownConfig.get<boolean>('preview.breaks', false);
-		this.doubleClickToSwitchToEditor = !!markdownConfig.get<boolean>('preview.doubleClickToSwitchToEditor', true);
-		this.markEditorSelection = !!markdownConfig.get<boolean>('preview.markEditorSelection', true);
+		this.previewFrontMatter = backlogConfig.get<string>('previewFrontMatter', 'hide');
+		this.scrollPreviewWithEditorSelection = !!backlogConfig.get<boolean>('preview.scrollPreviewWithEditorSelection', true);
+		this.scrollEditorWithPreview = !!backlogConfig.get<boolean>('preview.scrollEditorWithPreview', true);
+		this.lineBreaks = true; // For backlog
+		this.doubleClickToSwitchToEditor = !!backlogConfig.get<boolean>('preview.doubleClickToSwitchToEditor', true);
+		this.markEditorSelection = !!backlogConfig.get<boolean>('preview.markEditorSelection', true);
 
-		this.fontFamily = markdownConfig.get<string | undefined>('preview.fontFamily', undefined);
-		this.fontSize = Math.max(8, +markdownConfig.get<number>('preview.fontSize', NaN));
-		this.lineHeight = Math.max(0.6, +markdownConfig.get<number>('preview.lineHeight', NaN));
+		this.fontFamily = backlogConfig.get<string | undefined>('preview.fontFamily', undefined);
+		this.fontSize = Math.max(8, +backlogConfig.get<number>('preview.fontSize', NaN));
+		this.lineHeight = Math.max(0.6, +backlogConfig.get<number>('preview.lineHeight', NaN));
 
-		this.styles = markdownConfig.get<string[]>('styles', []);
+		this.styles = backlogConfig.get<string[]>('styles', []);
 	}
 
-	public isEqualTo(otherConfig: MarkdownPreviewConfig) {
+	public isEqualTo(otherConfig: BacklogPreviewConfig) {
 		for (let key in this) {
 			if (this.hasOwnProperty(key) && key !== 'styles') {
 				if (this[key] !== otherConfig[key]) {
@@ -108,12 +109,12 @@ class MarkdownPreviewConfig {
 }
 
 class PreviewConfigManager {
-	private previewConfigurationsForWorkspaces = new Map<string, MarkdownPreviewConfig>();
+	private previewConfigurationsForWorkspaces = new Map<string, BacklogPreviewConfig>();
 
 	public loadAndCacheConfiguration(
 		resource: vscode.Uri
 	) {
-		const config = MarkdownPreviewConfig.getConfigForResource(resource);
+		const config = BacklogPreviewConfig.getConfigForResource(resource);
 		this.previewConfigurationsForWorkspaces.set(this.getKey(resource), config);
 		return config;
 	}
@@ -123,7 +124,7 @@ class PreviewConfigManager {
 	): boolean {
 		const key = this.getKey(resource);
 		const currentConfig = this.previewConfigurationsForWorkspaces.get(key);
-		const newConfig = MarkdownPreviewConfig.getConfigForResource(resource);
+		const newConfig = BacklogPreviewConfig.getConfigForResource(resource);
 		return (!currentConfig || !currentConfig.isEqualTo(newConfig));
 	}
 
@@ -139,7 +140,7 @@ class PreviewConfigManager {
 }
 
 export class MDDocumentContentProvider implements vscode.TextDocumentContentProvider {
-	public static readonly scheme = 'markdown';
+	public static readonly scheme = 'backlog';
 
 	private _onDidChange = new vscode.EventEmitter<vscode.Uri>();
 	private _waiting: boolean = false;
@@ -150,6 +151,7 @@ export class MDDocumentContentProvider implements vscode.TextDocumentContentProv
 
 	constructor(
 		private engine: MarkdownEngine,
+		private engineBacklog: BacklogEngine,
 		private context: vscode.ExtensionContext,
 		private cspArbiter: ContentSecurityPolicyArbiter,
 		private logger: Logger
@@ -193,7 +195,7 @@ export class MDDocumentContentProvider implements vscode.TextDocumentContentProv
 		return vscode.Uri.file(path.join(path.dirname(resource.fsPath), href)).toString();
 	}
 
-	private computeCustomStyleSheetIncludes(resource: vscode.Uri, config: MarkdownPreviewConfig): string {
+	private computeCustomStyleSheetIncludes(resource: vscode.Uri, config: BacklogPreviewConfig): string {
 		if (config.styles && Array.isArray(config.styles)) {
 			return config.styles.map(style => {
 				return `<link rel="stylesheet" class="code-user-style" data-source="${style.replace(/"/g, '&quot;')}" href="${this.fixHref(resource, style)}" type="text/css" media="screen">`;
@@ -202,7 +204,7 @@ export class MDDocumentContentProvider implements vscode.TextDocumentContentProv
 		return '';
 	}
 
-	private getSettingsOverrideStyles(nonce: string, config: MarkdownPreviewConfig): string {
+	private getSettingsOverrideStyles(nonce: string, config: BacklogPreviewConfig): string {
 		return `<style nonce="${nonce}">
 			body {
 				${config.fontFamily ? `font-family: ${config.fontFamily};` : ''}
@@ -212,7 +214,7 @@ export class MDDocumentContentProvider implements vscode.TextDocumentContentProv
 		</style>`;
 	}
 
-	private getStyles(resource: vscode.Uri, nonce: string, config: MarkdownPreviewConfig): string {
+	private getStyles(resource: vscode.Uri, nonce: string, config: BacklogPreviewConfig): string {
 		const baseStyles = [
 			this.getMediaPath('markdown.css'),
 			this.getMediaPath('tomorrow.css')
@@ -258,7 +260,11 @@ export class MDDocumentContentProvider implements vscode.TextDocumentContentProv
 		const nonce = new Date().getTime() + '' + new Date().getMilliseconds();
 		const csp = this.getCspForResource(sourceUri, nonce);
 
-		const body = await this.engine.render(sourceUri, config.previewFrontMatter === 'hide', document.getText());
+		// Backlog Wiki to Markdown
+		const backlogWiki = document.getText();
+		const markdown = await this.engineBacklog.render(backlogWiki);
+
+		const body = await this.engine.render(sourceUri, config.previewFrontMatter === 'hide', markdown);
 		return `<!DOCTYPE html>
 			<html>
 			<head>

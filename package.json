@@ -4,13 +4,32 @@
 	"description": "Backlog Wiki Preview for VS Code",
 	"version": "0.0.1",
 	"publisher": "k--kato",
+	"preview": true,
 	"engines": {
-		"vscode": "^1.0.0"
+		"vscode": "^1.19.2"
 	},
+	"icon": "images/backlog_icon.png",
 	"main": "./out/extension",
 	"categories": [
 		"Languages"
 	],
+	"galleryBanner": {
+		"color": "#42CE9F",
+		"theme": "light"
+	},
+	"keywords": [
+		"backlog",
+		"preview"
+	],
+	"license": "MIT",
+	"homepage": "https://github.com/kasecato/vscode-backlog-wiki-preview",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/kasecato/vscode-backlog-wiki-preview"
+	},
+	"bugs": {
+		"url": "https://github.com/kasecato/vscode-backlog-wiki-preview/issues"
+	},
 	"activationEvents": [
 		"onLanguage:backlog",
 		"onCommand:backlog.refreshPreview",
@@ -179,18 +198,6 @@
 					"description": "%backlog.previewFrontMatter.dec%",
 					"scope": "resource"
 				},
-				"backlog.preview.breaks": {
-					"type": "boolean",
-					"default": false,
-					"description": "%backlog.preview.breaks.desc%",
-					"scope": "resource"
-				},
-				"backlog.preview.linkify": {
-					"type": "boolean",
-					"default": true,
-					"description": "%backlog.preview.linkify%",
-					"scope": "resource"
-				},
 				"backlog.preview.fontFamily": {
 					"type": "string",
 					"default": "-apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', 'HelveticaNeue-Light', 'Ubuntu', 'Droid Sans', sans-serif",
@@ -263,8 +270,8 @@
 		"clean": "gulp clean --max_old_space_size=4096",
 		"tslint": "gulp tslint --max_old_space_size=4096",
 		"watch": "gulp watch --max_old_space_size=4096",
-		"vscode:prepublish": "node ./node_modules/gulp/bin/gulp.js --gulpfile ./gulpfile.js compile ./tsconfig.json",
-		"update-grammar": "node ./node_modules/gulp/bin/gulp.js --gulpfile ./syntaxes/gulpfile.js"
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"vscode:prepublish": "node ./node_modules/gulp/bin/gulp.js --gulpfile ./gulpfile.js compile"
 	},
 	"dependencies": {
 		"highlight.js": "9.5.0",

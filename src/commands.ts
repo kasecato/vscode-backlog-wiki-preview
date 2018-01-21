@@ -11,7 +11,7 @@ import * as path from 'path';
 
 import { Command } from './commandManager';
 import { ExtensionContentSecurityPolicyArbiter, PreviewSecuritySelector } from './security';
-import { getMarkdownUri, MDDocumentContentProvider, isMarkdownFile } from './features/previewContentProvider';
+import { getBacklogUri, MDDocumentContentProvider, isBacklogFile } from './features/previewContentProvider';
 import { Logger } from './logger';
 import { TableOfContentsProvider } from './tableOfContentsProvider';
 import { MarkdownEngine } from './markdownEngine';
@@ -62,7 +62,7 @@ function showPreview(
 	}
 
 	const thenable = vscode.commands.executeCommand('vscode.previewHtml',
-		getMarkdownUri(resource),
+		getBacklogUri(resource),
 		getViewColumn(sideBySide),
 		localize('previewTitle', 'Preview {0}', path.basename(resource.fsPath)),
 		{
@@ -135,8 +135,8 @@ export class RefreshPreviewCommand implements Command {
 		if (resource) {
 			const source = vscode.Uri.parse(resource);
 			this.contentProvider.update(source);
-		} else if (vscode.window.activeTextEditor && isMarkdownFile(vscode.window.activeTextEditor.document)) {
-			this.contentProvider.update(getMarkdownUri(vscode.window.activeTextEditor.document.uri));
+		} else if (vscode.window.activeTextEditor && isBacklogFile(vscode.window.activeTextEditor.document)) {
+			this.contentProvider.update(getBacklogUri(vscode.window.activeTextEditor.document.uri));
 		} else {
 			// update all generated md documents
 			for (const document of vscode.workspace.textDocuments) {
@@ -160,7 +160,7 @@ export class ShowPreviewSecuritySelectorCommand implements Command {
 			const source = vscode.Uri.parse(resource).query;
 			this.previewSecuritySelector.showSecutitySelectorForResource(vscode.Uri.parse(source));
 		} else {
-			if (vscode.window.activeTextEditor && vscode.window.activeTextEditor.document.languageId === 'markdown') {
+			if (vscode.window.activeTextEditor && vscode.window.activeTextEditor.document.languageId === 'backlog') {
 				this.previewSecuritySelector.showSecutitySelectorForResource(vscode.window.activeTextEditor.document.uri);
 			}
 		}
@@ -179,7 +179,7 @@ export class RevealLineCommand implements Command {
 		this.logger.log('revealLine', { uri, sourceUri: sourceUri.toString(), line });
 
 		vscode.window.visibleTextEditors
-			.filter(editor => isMarkdownFile(editor.document) && editor.document.uri.toString() === sourceUri.toString())
+			.filter(editor => isBacklogFile(editor.document) && editor.document.uri.toString() === sourceUri.toString())
 			.forEach(editor => {
 				const sourceLine = Math.floor(line);
 				const fraction = line - sourceLine;
@@ -278,7 +278,7 @@ export class OpenDocumentLinkCommand implements Command {
 		};
 
 		const tryOpen = async (path: string) => {
-			if (vscode.window.activeTextEditor && isMarkdownFile(vscode.window.activeTextEditor.document) && vscode.window.activeTextEditor.document.uri.fsPath === path) {
+			if (vscode.window.activeTextEditor && isBacklogFile(vscode.window.activeTextEditor.document) && vscode.window.activeTextEditor.document.uri.fsPath === path) {
 				return tryRevealLine(vscode.window.activeTextEditor);
 			} else {
 				const resource = vscode.Uri.file(path);

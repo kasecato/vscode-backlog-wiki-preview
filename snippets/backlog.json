@@ -21,7 +21,7 @@
 	},
 	"Insert url": {
 		"prefix": "url",
-		"body": "[[${1:text}:https://${2:link}]]$0",
+		"body": "[[${1:text}:${2:link}]]$0",
 		"description": "Insert url"
 	},
 	"Insert header": {
@@ -63,6 +63,16 @@
 		],
 		"description": "Insert code"
 	},
+	"Insert subversion revision": {
+		"prefix": "subversion",
+		"body": "#rev(${1:revision number})",
+		"description": "Insert subversion revision"
+	},
+	"Insert git revision": {
+		"prefix": "git",
+		"body": "#rev(${1:repository}:${2:revision})",
+		"description": "Insert git revision"
+	},
 	"Insert table of contents": {
 		"prefix": "contents",
 		"body": [
@@ -83,17 +93,17 @@
 	},
 	"Insert image": {
 		"prefix": "image",
-		"body": "#image(https://${1:link})$0",
+		"body": "#image(${1:link})$0",
 		"description": "Insert image"
 	},
 	"Insert thumbnail": {
 		"prefix": "thumbnail",
-		"body": "#thumbnail(https://${1:link})$0",
+		"body": "#thumbnail(${1:link})$0",
 		"description": "Insert thumbnail"
 	},
 	"Insert attached file": {
 		"prefix": "attach",
-		"body": "#attach(https://${1:link})$0",
+		"body": "#attach(${1:link})$0",
 		"description": "Insert attached file"
 	}
 }
