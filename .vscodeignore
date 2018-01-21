@@ -1,3 +1,7 @@
-test/**
 src/**
 tsconfig.json
+tslint.json
+**/*.map
+.gitignore
+.travis.yml
+.vscode/**

@@ -5,6 +5,7 @@
 
 import * as vscode from 'vscode';
 
+import { BacklogEngine } from './backlogEngine';
 import { MarkdownEngine } from './markdownEngine';
 import { ExtensionContentSecurityPolicyArbiter, PreviewSecuritySelector } from './security';
 import { Logger } from './logger';
@@ -14,7 +15,7 @@ import { loadDefaultTelemetryReporter } from './telemetryReporter';
 import { loadMarkdownExtensions } from './markdownExtensions';
 import LinkProvider from './features/documentLinkProvider';
 import MDDocumentSymbolProvider from './features/documentSymbolProvider';
-import { MDDocumentContentProvider, getMarkdownUri, isMarkdownFile } from './features/previewContentProvider';
+import { MDDocumentContentProvider, getBacklogUri, isBacklogFile } from './features/previewContentProvider';
 
 
 export function activate(context: vscode.ExtensionContext) {
@@ -23,11 +24,12 @@ export function activate(context: vscode.ExtensionContext) {
 
 	const cspArbiter = new ExtensionContentSecurityPolicyArbiter(context.globalState, context.workspaceState);
 	const engine = new MarkdownEngine();
+	const engineBacklog = new BacklogEngine();
 	const logger = new Logger();
 
 	const selector = 'backlog';
 
-	const contentProvider = new MDDocumentContentProvider(engine, context, cspArbiter, logger);
+	const contentProvider = new MDDocumentContentProvider(engine, engineBacklog, context, cspArbiter, logger);
 	context.subscriptions.push(vscode.workspace.registerTextDocumentContentProvider(MDDocumentContentProvider.scheme, contentProvider));
 
 	loadMarkdownExtensions(contentProvider, engine);
@@ -51,15 +53,15 @@ export function activate(context: vscode.ExtensionContext) {
 	commandManager.register(new commands.OpenDocumentLinkCommand(engine));
 
 	context.subscriptions.push(vscode.workspace.onDidSaveTextDocument(document => {
-		if (isMarkdownFile(document)) {
-			const uri = getMarkdownUri(document.uri);
+		if (isBacklogFile(document)) {
+			const uri = getBacklogUri(document.uri);
 			contentProvider.update(uri);
 		}
 	}));
 
 	context.subscriptions.push(vscode.workspace.onDidChangeTextDocument(event => {
-		if (isMarkdownFile(event.document)) {
-			const uri = getMarkdownUri(event.document.uri);
+		if (isBacklogFile(event.document)) {
+			const uri = getBacklogUri(event.document.uri);
 			contentProvider.update(uri);
 		}
 	}));
@@ -70,12 +72,12 @@ export function activate(context: vscode.ExtensionContext) {
 	}));
 
 	context.subscriptions.push(vscode.window.onDidChangeTextEditorSelection(event => {
-		if (isMarkdownFile(event.textEditor.document)) {
-			const markdownFile = getMarkdownUri(event.textEditor.document.uri);
-			logger.log('updatePreviewForSelection', { markdownFile: markdownFile.toString() });
+		if (isBacklogFile(event.textEditor.document)) {
+			const backlogFile = getBacklogUri(event.textEditor.document.uri);
+			logger.log('updatePreviewForSelection', { markdownFile: backlogFile.toString() });
 
 			vscode.commands.executeCommand('_workbench.htmlPreview.postMessage',
-				markdownFile,
+				backlogFile,
 				{
 					line: event.selections[0].active.line
 				});

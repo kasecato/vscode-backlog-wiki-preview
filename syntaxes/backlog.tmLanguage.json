@@ -121,7 +121,7 @@
 			"patterns": [
 				{
 					"name": "constant.other.color.w3c-standard-color-name.backlog",
-					"match": "&color\\([ \t]*(?i)(?:aqua|black|blue|fuchsia|gray|green|lime|maroon|navy|olive|orange|purple|red|silver|teal|white|yellow)[ \t]*\\)[ \t]*\\{.*?\\}",
+					"match": "&color\\([ \t]*(?i:aqua|black|blue|fuchsia|gray|green|lime|maroon|navy|olive|orange|purple|red|silver|teal|white|yellow)[ \t]*\\)[ \t]*\\{.*?\\}",
 					"captures": {
 						"0": {
 							"name": "punctuation.definition.constant.backlog"
@@ -130,7 +130,7 @@
 				},
 				{
 					"name": "constant.other.color.rgb-value.hex.backlog",
-					"match": "&color\\([ \t]*(#)(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})[ \t]*\\)[ \t]*\\{.*?\\}",
+					"match": "&color\\([ \t]*#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})[ \t]*\\)[ \t]*\\{.*?\\}",
 					"captures": {
 						"0": {
 							"name": "punctuation.definition.constant.backlog"

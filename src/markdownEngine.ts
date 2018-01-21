@@ -35,12 +35,13 @@ export class MarkdownEngine {
 		}
 	}
 
-	private async getEngine(resource: vscode.Uri): Promise<MarkdownIt> {
+	private async getEngine(): Promise<MarkdownIt> {
 		if (!this.md) {
 			const hljs = await import('highlight.js');
 			const mdnh = await import('markdown-it-named-headers');
 			this.md = (await import('markdown-it'))({
 				html: true,
+				breaks: true,
 				highlight: (str: string, lang: string) => {
 					// Workaround for highlight not supporting tsx: https://github.com/isagalaev/highlight.js/issues/1155
 					if (lang && ['tsx', 'typescriptreact'].indexOf(lang.toLocaleLowerCase()) >= 0) {
@@ -51,7 +52,7 @@ export class MarkdownEngine {
 							return `<pre class="hljs"><code><div>${hljs.highlight(lang, str, true).value}</div></code></pre>`;
 						} catch (error) { }
 					}
-					return `<pre class="hljs"><code><div>${this.md.utils.escapeHtml(str)}</div></code></pre>`;
+					return `<pre class="hljs"><code><div>${hljs.highlightAuto(str).value}</div></code></pre>`; // For backlog
 				}
 			}).use(mdnh, {
 				slugify: (header: string) => TableOfContentsProvider.slugify(header)
@@ -70,10 +71,9 @@ export class MarkdownEngine {
 			this.addLinkValidator(this.md);
 		}
 
-		const config = vscode.workspace.getConfiguration('markdown', resource);
 		this.md.set({
-			breaks: config.get<boolean>('preview.breaks', false),
-			linkify: config.get<boolean>('preview.linkify', true)
+			breaks: true, // For backlog
+			linkify: true // For backlog
 		});
 		return this.md;
 	}
@@ -98,14 +98,14 @@ export class MarkdownEngine {
 		}
 		this.currentDocument = document;
 		this.firstLine = offset;
-		const engine = await this.getEngine(document);
+		const engine = await this.getEngine();
 		return engine.render(text);
 	}
 
 	public async parse(document: vscode.Uri, source: string): Promise<Token[]> {
 		const { text, offset } = this.stripFrontmatter(source);
 		this.currentDocument = document;
-		const engine = await this.getEngine(document);
+		const engine = await this.getEngine();
 
 		return engine.parse(text, {}).map(token => {
 			if (token.map) {

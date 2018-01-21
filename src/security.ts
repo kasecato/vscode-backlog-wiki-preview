@@ -6,7 +6,7 @@
 
 import * as vscode from 'vscode';
 
-import { getMarkdownUri, MDDocumentContentProvider } from './features/previewContentProvider';
+import { getBacklogUri, MDDocumentContentProvider } from './features/previewContentProvider';
 
 import * as nls from 'vscode-nls';
 
@@ -144,7 +144,7 @@ export class PreviewSecuritySelector {
 			return;
 		}
 
-		const sourceUri = getMarkdownUri(resource);
+		const sourceUri = getBacklogUri(resource);
 		if (selection.type === 'toggle') {
 			this.cspArbiter.setShouldDisableSecurityWarning(!this.cspArbiter.shouldDisableSecurityWarnings());
 			this.contentProvider.update(sourceUri);
