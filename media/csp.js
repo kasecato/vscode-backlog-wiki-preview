@@ -6,8 +6,8 @@
 'use strict';
 
 (function () {
-	const settings = JSON.parse(document.getElementById('vscode-markdown-preview-data').getAttribute('data-settings'));
-	const strings = JSON.parse(document.getElementById('vscode-markdown-preview-data').getAttribute('data-strings'));
+	const settings = JSON.parse(document.getElementById('vscode-backlog-preview-data').getAttribute('data-settings'));
+	const strings = JSON.parse(document.getElementById('vscode-backlog-preview-data').getAttribute('data-strings'));
 
 	let didShow = false;
 

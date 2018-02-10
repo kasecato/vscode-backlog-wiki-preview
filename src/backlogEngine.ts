@@ -12,6 +12,7 @@ export class BacklogEngine {
 			this.url,
 			this.listUnnumbered,
 			this.listNumbered,
+			this.tableWithHeader,
 			this.quote,
 			this.quoteMark,
 			this.codeMark,
@@ -97,6 +98,16 @@ export class BacklogEngine {
 				"\t".repeat(list.length - 1) +
 				"1." +
 				(spaces ? spaces : " "));
+	}
+
+	private tableWithHeader = (text: string) => {
+		return text.replace(
+			/(^|\n)(\|.+?\|)h($|\n)/g,
+			(_, breakStart: string, header: string, breakEnd: string) =>
+				(breakStart ? breakStart : "") +
+				header + "\n" +
+				"|--".repeat(header.split(/\\|/g).length) + "|" +
+				(breakEnd ? breakEnd : ""));
 	}
 
 	private quote = (text: string) => {

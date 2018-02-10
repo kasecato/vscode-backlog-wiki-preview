@@ -270,7 +270,7 @@ export class MDDocumentContentProvider implements vscode.TextDocumentContentProv
 			<head>
 				<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 				${csp}
-				<meta id="vscode-markdown-preview-data" data-settings="${JSON.stringify(initialData).replace(/"/g, '&quot;')}" data-strings="${JSON.stringify(previewStrings).replace(/"/g, '&quot;')}">
+				<meta id="vscode-backlog-preview-data" data-settings="${JSON.stringify(initialData).replace(/"/g, '&quot;')}" data-strings="${JSON.stringify(previewStrings).replace(/"/g, '&quot;')}">
 				<script src="${this.getMediaPath('csp.js')}" nonce="${nonce}"></script>
 				<script src="${this.getMediaPath('loading.js')}" nonce="${nonce}"></script>
 				${this.getStyles(sourceUri, nonce, config)}

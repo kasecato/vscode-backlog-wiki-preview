@@ -188,7 +188,7 @@
 
 	var scrollDisabled = true;
 	var marker = new ActiveLineMarker();
-	const settings = JSON.parse(document.getElementById('vscode-markdown-preview-data').getAttribute('data-settings'));
+	const settings = JSON.parse(document.getElementById('vscode-backlog-preview-data').getAttribute('data-settings'));
 
 	function onLoad() {
 		if (settings.scrollPreviewWithEditorSelection) {

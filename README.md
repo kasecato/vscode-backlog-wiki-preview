@@ -28,7 +28,7 @@ Header | * Header1<br/>** Header2<br/>*** Header3 | <h1>Header1</h1><h2>Header2<
 Bulleted List | - Item-A<br/>- Item-B<br/>-- Item-B-1<br/>--- Item-B-2-a | <ul><li>Item-A</li><li>Item-B<ul><li>Item-B-1</li><ul><li>Item-B-2-a</li></ul></ul></li></ul> | ✅ | ✅ | ✅ |
 Numbered List | + Item-A<br/>+ Item-B<br/>+ Item-C | <ol type="1"><li>Item-A</li><li>Item-B<li>Item-C</li></ol> | ✅ | ✅ | ✅ |
 Table | \| A \| B \| C \|<br/>\|a\|b\|c\| | | □ | □ | □ 
-Table | \|A\|B\|C\|h<br/>\|a\|b\|c\|<br/>\|e\|f\|g\| | | □ | □ | □ 
+Table | \|A\|B\|C\|h<br/>\|a\|b\|c\|<br/>\|e\|f\|g\| | | ✅ | □ | □ 
 Table | \|~No.1\|aaa\|bbb\|<br/>\|~No.2\|ccc\|ddd\| | | □ | □ | □ 
 Quote | >Quote<br/>>This is a paragraph | <blockquote>Quote<br/>This is a paragraph</blockquote> | ✅ | ✅ | ✅ |
 Quote | {quote}<br/>Quote<br/>This is a paragraph<br/>{/quote} | <blockquote>Quote<br/>This is a paragraph</blockquote> | ✅ | ✅ | □ |
@@ -52,7 +52,7 @@ Escape a special letter | \\%\\%Not Striked\\%\\% | \\%\\%Not Striked\\%\\% | �
 
 ## Options
 
-```json
+```javascript
 {
     // Double click in the backlog preview to switch to the editor.
     "backlog.preview.doubleClickToSwitchToEditor": true,
@@ -89,7 +89,7 @@ Escape a special letter | \\%\\%Not Striked\\%\\% | \\%\\%Not Striked\\%\\% | �
 
 ## Known Issues
 
-- Table notation is not yet supported
+- ~~Table notation is not yet supported~~ Feb 10, 2018
 - Not yet compatible with escape
 - Markdown notation is previewed
 - Some syntax that can not be converted with backlog is highlighted
