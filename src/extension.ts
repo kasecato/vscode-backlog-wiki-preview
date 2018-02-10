@@ -16,6 +16,7 @@ import { loadMarkdownExtensions } from './markdownExtensions';
 import LinkProvider from './features/documentLinkProvider';
 import MDDocumentSymbolProvider from './features/documentSymbolProvider';
 import { MDDocumentContentProvider, getBacklogUri, isBacklogFile } from './features/previewContentProvider';
+import { Converter } from './features/converter';
 
 
 export function activate(context: vscode.ExtensionContext) {
@@ -25,6 +26,7 @@ export function activate(context: vscode.ExtensionContext) {
 	const cspArbiter = new ExtensionContentSecurityPolicyArbiter(context.globalState, context.workspaceState);
 	const engine = new MarkdownEngine();
 	const engineBacklog = new BacklogEngine();
+	const converter = new Converter(engineBacklog);
 	const logger = new Logger();
 
 	const selector = 'backlog';
@@ -51,6 +53,7 @@ export function activate(context: vscode.ExtensionContext) {
 	commandManager.register(new commands.OnPreviewStyleLoadErrorCommand());
 	commandManager.register(new commands.DidClickCommand());
 	commandManager.register(new commands.OpenDocumentLinkCommand(engine));
+	commandManager.register(new commands.ConvertToMarkdownCommand(converter));
 
 	context.subscriptions.push(vscode.workspace.onDidSaveTextDocument(document => {
 		if (isBacklogFile(document)) {

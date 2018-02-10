@@ -16,6 +16,7 @@ import { Logger } from './logger';
 import { TableOfContentsProvider } from './tableOfContentsProvider';
 import { MarkdownEngine } from './markdownEngine';
 import { TelemetryReporter } from './telemetryReporter';
+import { Converter } from './features/converter';
 
 
 function getViewColumn(sideBySide: boolean): vscode.ViewColumn | undefined {
@@ -297,5 +298,17 @@ export class OpenDocumentLinkCommand implements Command {
 				.then(() => vscode.commands.executeCommand('vscode.open', resource))
 				.then(() => void 0);
 		});
+	}
+}
+
+export class ConvertToMarkdownCommand implements Command {
+	public readonly id = 'backlog.convertToMarkdown';
+
+	public constructor(
+		private readonly converter: Converter
+	) { }
+
+	public async execute() {
+		await this.converter.convertBacklogToMarkdown();
 	}
 }

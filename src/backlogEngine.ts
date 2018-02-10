@@ -106,7 +106,7 @@ export class BacklogEngine {
 			(_, breakStart: string, header: string, breakEnd: string) =>
 				(breakStart ? breakStart : "") +
 				header + "\n" +
-				"|--".repeat(header.split(/\\|/g).length) + "|" +
+				"|--".repeat(header.split(/\|/g).length - 2) + "|" +
 				(breakEnd ? breakEnd : ""));
 	}
 

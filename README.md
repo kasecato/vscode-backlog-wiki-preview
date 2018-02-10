@@ -89,7 +89,7 @@ Escape a special letter | \\%\\%Not Striked\\%\\% | \\%\\%Not Striked\\%\\% | â–
 
 ## Known Issues
 
-- ~~Table notation is not yet supported~~ Feb 10, 2018
+- ~~Table notation is not yet supported~~ Feb 11, 2018
 - Not yet compatible with escape
 - Markdown notation is previewed
 - Some syntax that can not be converted with backlog is highlighted
@@ -101,3 +101,4 @@ Escape a special letter | \\%\\%Not Striked\\%\\% | \\%\\%Not Striked\\%\\% | â–
 - GitHub, "Visual Studio Code," https://github.com/Microsoft/vscode
 - Visual Studio Code, "Markdown and VS Code," https://code.visualstudio.com/docs/languages/markdown
 - Backlog, "Our Logos," https://nulab-inc.com/about/logo/
+- GitHub, "TextMate/Sublime Language Definition for VSCode," https://github.com/Togusa09/vscode-tmlanguage

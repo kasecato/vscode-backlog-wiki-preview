@@ -1,4 +1,5 @@
 {
+	"backlog.convertToMarkdown.title": "Convert to Markdown",
 	"backlog.preview.doubleClickToSwitchToEditor.desc": "Double click in the backlog preview to switch to the editor.",
 	"backlog.preview.fontFamily.desc": "Controls the font family used in the backlog preview.",
 	"backlog.preview.fontSize.desc": "Controls the font size in pixels used in the backlog preview.",

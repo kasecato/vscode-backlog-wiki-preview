@@ -2,7 +2,7 @@
 	"name": "vscode-backlog-wiki-preview",
 	"displayName": "VS Code Backlog Wiki Preview",
 	"description": "Backlog Wiki Preview for VS Code",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"publisher": "k--kato",
 	"preview": true,
 	"engines": {
@@ -32,6 +32,7 @@
 	},
 	"activationEvents": [
 		"onLanguage:backlog",
+		"onCommand:backlog.convertToMarkdown",
 		"onCommand:backlog.refreshPreview",
 		"onCommand:backlog.showPreview",
 		"onCommand:backlog.showPreviewToSide",
@@ -62,6 +63,11 @@
 			}
 		],
 		"commands": [
+			{
+				"command": "backlog.convertToMarkdown",
+				"title": "%backlog.convertToMarkdown.title%",
+				"category": "Backlog"
+			},
 			{
 				"command": "backlog.showPreview",
 				"title": "%backlog.preview.title%",
