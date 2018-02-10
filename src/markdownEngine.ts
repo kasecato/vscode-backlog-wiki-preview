@@ -11,11 +11,11 @@ import { MarkdownIt, Token } from 'markdown-it';
 const FrontMatterRegex = /^---\s*[^]*?(-{3}|\.{3})\s*/;
 
 export class MarkdownEngine {
-	private md: MarkdownIt;
+	private md!: MarkdownIt;
 
-	private firstLine: number;
+	private firstLine!: number;
 
-	private currentDocument: vscode.Uri;
+	private currentDocument!: vscode.Uri;
 
 	private plugins: Array<(md: any) => any> = [];
 

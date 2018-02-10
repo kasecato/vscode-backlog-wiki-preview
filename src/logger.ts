@@ -32,8 +32,8 @@ function isString(value: any): value is string {
 }
 
 export class Logger {
-	private trace: Trace;
-	private _output: OutputChannel;
+	private trace!: Trace;
+	private _output!: OutputChannel;
 
 	constructor() {
 		this.updateConfiguration();

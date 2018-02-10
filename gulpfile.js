@@ -13,7 +13,7 @@ const vfs = require('vinyl-fs');
 
 const extensionsPath = path.dirname(__dirname);
 
-const compilations = glob.sync('**/tsconfig.json', {
+const compilations = glob.sync('vscode-backlog-wiki-preview/tsconfig.json', {
 	cwd: extensionsPath,
 	ignore: ['**/out/**', '**/node_modules/**']
 });
