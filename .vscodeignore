@@ -6,3 +6,4 @@ tslint.json
 .travis.yml
 .vscode/**
 images/vscode-backlog-wiki-preview.gif
+package-lock.json

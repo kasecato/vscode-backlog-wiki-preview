@@ -12,7 +12,6 @@ export class Converter {
 	public async convertBacklogToMarkdown() {
 
 		let editor = vscode.window.activeTextEditor;
-
 		if (!editor) {
 			return;
 		}
@@ -20,26 +19,23 @@ export class Converter {
 		try {
 			const doc = editor.document;
 			const parsedFilePath = path.parse(doc.fileName);
-
 			let documentText: string = doc.getText();
-
 			await this.createFileWithUniqueName(parsedFilePath, "md", documentText);
-
 		} catch (err) {
 			console.log(err);
 		}
 	}
 
 	private async createFileWithUniqueName(parsedFilePath: path.ParsedPath, extension: string, documentText: string): Promise<void> {
-		const matchingFiles = await vscode.workspace.findFiles(parsedFilePath.name + "*." + extension, "ABC");
-		var paths = matchingFiles.map(p => p.fsPath);
+		const matchingFiles = await vscode.workspace.findFiles("**/" + parsedFilePath.name + "*." + extension);
+		let paths = matchingFiles.map(p => p.fsPath);
 
-		var editorWindows = vscode.window.visibleTextEditors.map(x => x.document.fileName);
+		const editorWindows = vscode.window.visibleTextEditors.map(x => x.document.fileName);
 		paths = paths.concat(editorWindows);
 
-		var newFilePath = path.join(parsedFilePath.dir, './' + parsedFilePath.name + '.' + extension);
+		let newFilePath = path.join(parsedFilePath.dir, './' + parsedFilePath.name + '.' + extension);
 		if (matchingFiles.length !== 0) {
-			var counter = 1;
+			let counter = 1;
 			while (paths.indexOf(newFilePath) >= 0) {
 				newFilePath = path.join(parsedFilePath.dir, './' + parsedFilePath.name + '(' + counter + ').' + extension);
 				counter++;
@@ -66,7 +62,6 @@ export class Converter {
 		if (existing) {
 			return vscode.Uri.file(filePath);
 		}
-
 		return vscode.Uri.parse("untitled:" + filePath);
 	}
 

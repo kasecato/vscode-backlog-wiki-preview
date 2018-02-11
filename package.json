@@ -2,11 +2,11 @@
 	"name": "vscode-backlog-wiki-preview",
 	"displayName": "VS Code Backlog Wiki Preview",
 	"description": "Backlog Wiki Preview for VS Code",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"publisher": "k--kato",
 	"preview": true,
 	"engines": {
-		"vscode": "^1.19.2"
+		"vscode": "^1.20.0"
 	},
 	"icon": "images/backlog_icon.png",
 	"main": "./out/extension",
