@@ -139,6 +139,11 @@
 			],
 			"commandPalette": [
 				{
+					"command": "backlog.convertToMarkdown",
+					"when": "editorLangId == backlog",
+					"group": "navigation"
+				},
+				{
 					"command": "backlog.showPreview",
 					"when": "editorLangId == backlog",
 					"group": "navigation"
