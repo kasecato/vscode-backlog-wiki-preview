@@ -8,6 +8,12 @@ You just start writing [Backlog](https://backlog.com/) wiki, save the file with 
 
 > Tip: You can also right-click on the editor Tab and select **Open Preview** or use the **Command Palette** (`⇧⌘P`) **Backlog: Open Preview** and **Backlog: Open Preview to the Side** commands.
 
+## Features
+
+- Previews
+- Syntaxes
+- Snippets
+- Convert Wiki to Markdown
 
 ## Usage
 

@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.4 (Feburuay 17, 2018)
+* bug fix - Fixed an error when previewing the first line
+* bug fix - Fixed an issue that always shows convert to json in the command palette
+
 ## 0.0.3 (Feburuay 11, 2018)
 * bug fix - Fixed an issue that a Markdown file cann't generate when the file exists with the same name
 
