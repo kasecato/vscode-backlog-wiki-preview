@@ -176,7 +176,8 @@ export class MarkdownEngine {
 
 	// For backlog
 	private backlogOffsets: Map<string, number> = new Map([
-		['table_open', 1]
+		['table_open', 1],
+		['blockquote_open', 1],
 	]);
 
 	private getBacklog2MarkdownOffset(tokens: Array<Token>, idx: number): number {

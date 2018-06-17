@@ -1,5 +1,8 @@
 # Change Log
 
+## 0.0.5 (June 17, 2018)
+* bug fix - Fixed an issue that quotes becomes quotes after a new line
+
 ## 0.0.4 (Feburuay 17, 2018)
 * bug fix - Fixed an error when previewing the first line
 * bug fix - Fixed an issue that always shows convert to json in the command palette

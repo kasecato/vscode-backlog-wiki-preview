@@ -2,16 +2,16 @@
 	"name": "vscode-backlog-wiki-preview",
 	"displayName": "VS Code Backlog Wiki Preview",
 	"description": "Backlog Wiki Preview for VS Code",
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"publisher": "k--kato",
 	"preview": true,
 	"engines": {
-		"vscode": "^1.20.0"
+		"vscode": "^1.23.0"
 	},
 	"icon": "images/backlog_icon.png",
 	"main": "./out/extension",
 	"categories": [
-		"Languages"
+		"Programming Languages"
 	],
 	"galleryBanner": {
 		"color": "#42CE9F",
@@ -288,14 +288,14 @@
 		"highlight.js": "^9.12.0",
 		"markdown-it": "^8.4.1",
 		"markdown-it-named-headers": "^0.0.4",
-		"vscode-extension-telemetry": "^0.0.12",
-		"vscode-nls": "^3.2.1",
-		"vscode": "^1.1.10"
+		"vscode-extension-telemetry": "^0.0.17",
+		"vscode-nls": "^3.2.2",
+		"vscode": "^1.1.18"
 	},
 	"devDependencies": {
-		"@types/highlight.js": "^9.12.2",
+		"@types/highlight.js": "^9.12.3",
 		"@types/markdown-it": "^0.0.4",
-		"@types/node": "^9.4.6",
+		"@types/node": "^10.3.3",
 		"glob": "^7.1.2",
 		"gulp": "^3.9.1",
 		"gulp-filter": "^5.1.0",
@@ -304,10 +304,10 @@
 		"gulp-tslint": "^8.1.3",
 		"event-stream": "^3.3.4",
 		"rimraf": "^2.6.2",
-		"source-map": "^0.7.1",
-		"tslint": "^5.9.1",
-		"typescript": "^2.7.2",
-		"vinyl-fs": "^3.0.2",
-		"vsce": "^1.36.2"
+		"source-map": "^0.7.3",
+		"tslint": "^5.10.0",
+		"typescript": "^2.9.2",
+		"vinyl-fs": "^3.0.3",
+		"vsce": "^1.42.0"
 	}
 }

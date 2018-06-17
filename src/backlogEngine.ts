@@ -112,11 +112,14 @@ export class BacklogEngine {
 
 	private quote = (text: string) => {
 		return text.replace(
-			/(^|\n)(>)(\s*?)/g,
-			(_, breaker: string, quote: string, spaces: string) =>
+			/(^|\n)(>)(\s*?)([\s\S]*?)($|\n)/g,
+			(_, breaker: string, quote: string, spaces: string, words: string, breakEnd: string) =>
 				(breaker ? breaker : "") +
 				quote +
-				(spaces ? spaces : " "));
+				(spaces ? spaces : " ") +
+				words +
+				(breakEnd ? breakEnd + "\n" : "")
+			);
 	}
 
 	private quoteMark = (text: string) => {
@@ -124,7 +127,6 @@ export class BacklogEngine {
 			/(^|\n)\{quote\}\n([\s\S]*?)\n\{\/quote\}(\n)?/g,
 			(_, breakStart: string, quote: string, breakEnd: string) =>
 				(breakStart ? breakStart : "") +
-				"\n" +
 				"> " + quote +
 				"\n" +
 				(breakEnd ? breakEnd : ""));
