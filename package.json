@@ -2,11 +2,12 @@
 	"name": "vscode-backlog-wiki-preview",
 	"displayName": "VS Code Backlog Wiki Preview",
 	"description": "Backlog Wiki Preview for VS Code",
-	"version": "0.0.5",
+	"version": "0.0.6",
 	"publisher": "k--kato",
+	"enableProposedApi": false,
 	"preview": true,
 	"engines": {
-		"vscode": "^1.23.0"
+		"vscode": "^1.40.0"
 	},
 	"icon": "images/backlog_icon.png",
 	"main": "./out/extension",
@@ -33,11 +34,16 @@
 	"activationEvents": [
 		"onLanguage:backlog",
 		"onCommand:backlog.convertToMarkdown",
-		"onCommand:backlog.refreshPreview",
+		"onCommand:backlog.preview.toggleLock",
+		"onCommand:backlog.preview.refresh",
 		"onCommand:backlog.showPreview",
 		"onCommand:backlog.showPreviewToSide",
+		"onCommand:backlog.showLockedPreviewToSide",
 		"onCommand:backlog.showSource",
-		"onCommand:backlog.showPreviewSecuritySelector"
+		"onCommand:backlog.showPreviewSecuritySelector",
+		"onCommand:backlog.api.render",
+		"onWebviewPanel:backlog.preview",
+		"onWebviewEditor:vscode.backlog.preview.editor"
 	],
 	"contributes": {
 		"languages": [
@@ -87,22 +93,36 @@
 				}
 			},
 			{
+				"command": "backlog.showLockedPreviewToSide",
+				"title": "%backlog.showLockedPreviewToSide.title%",
+				"category": "Backlog",
+				"icon": {
+					"light": "./media/preview-right-light.svg",
+					"dark": "./media/preview-right-dark.svg"
+				}
+			},
+			{
 				"command": "backlog.showSource",
 				"title": "%backlog.showSource.title%",
 				"category": "Backlog",
 				"icon": {
-					"light": "./media/ViewSource.svg",
-					"dark": "./media/ViewSource_inverse.svg"
+					"light": "./media/view-source-light.svg",
+					"dark": "./media/view-source-dark.svg"
 				}
-			},
-			{
-				"command": "backlog.refreshPreview",
-				"title": "%backlog.refreshPreview.title%",
-				"category": "Backlog"
 			},
 			{
 				"command": "backlog.showPreviewSecuritySelector",
 				"title": "%backlog.showPreviewSecuritySelector.title%",
+				"category": "Backlog"
+			},
+			{
+				"command": "backlog.preview.refresh",
+				"title": "%backlog.preview.refresh.title%",
+				"category": "Backlog"
+			},
+			{
+				"command": "backlog.preview.toggleLock",
+				"title": "%backlog.preview.toggleLock.title%",
 				"category": "Backlog"
 			}
 		],
@@ -120,13 +140,18 @@
 					"group": "navigation"
 				},
 				{
-					"command": "backlog.refreshPreview",
+					"command": "backlog.preview.refresh",
 					"when": "resourceScheme == backlog",
 					"group": "1_backlog"
 				},
 				{
+					"command": "backlog.preview.toggleLock",
+					"when": "backlogPreviewFocus",
+					"group": "1_backlog"
+				},
+				{
 					"command": "backlog.showPreviewSecuritySelector",
-					"when": "resourceScheme == backlog",
+					"when": "backlogPreviewFocus",
 					"group": "1_backlog"
 				}
 			],
@@ -137,12 +162,14 @@
 					"group": "navigation"
 				}
 			],
-			"commandPalette": [
+			"editor/title/context": [
 				{
-					"command": "backlog.convertToMarkdown",
-					"when": "editorLangId == backlog",
+					"command": "backlog.showPreview",
+					"when": "resourceLangId == backlog",
 					"group": "navigation"
-				},
+				}
+			],
+			"commandPalette": [
 				{
 					"command": "backlog.showPreview",
 					"when": "editorLangId == backlog",
@@ -154,8 +181,13 @@
 					"group": "navigation"
 				},
 				{
+					"command": "backlog.showLockedPreviewToSide",
+					"when": "editorLangId == backlog",
+					"group": "navigation"
+				},
+				{
 					"command": "backlog.showSource",
-					"when": "resourceScheme == backlog",
+					"when": "backlogPreviewFocus",
 					"group": "navigation"
 				},
 				{
@@ -164,7 +196,23 @@
 				},
 				{
 					"command": "backlog.showPreviewSecuritySelector",
-					"when": "resourceScheme == backlog"
+					"when": "backlogPreviewFocus"
+				},
+				{
+					"command": "backlog.preview.toggleLock",
+					"when": "backlogPreviewFocus"
+				},
+				{
+					"command": "backlog.preview.refresh",
+					"when": "editorLangId == backlog"
+				},
+				{
+					"command": "backlog.preview.refresh",
+					"when": "backlogPreviewFocus"
+				},
+				{
+					"command": "backlog.convertToMarkdown",
+					"when": "editorLangId == backlog"
 				}
 			]
 		},
@@ -199,16 +247,6 @@
 					"description": "%backlog.styles.dec%",
 					"scope": "resource"
 				},
-				"backlog.previewFrontMatter": {
-					"type": "string",
-					"enum": [
-						"hide",
-						"show"
-					],
-					"default": "hide",
-					"description": "%backlog.previewFrontMatter.dec%",
-					"scope": "resource"
-				},
 				"backlog.preview.fontFamily": {
 					"type": "string",
 					"default": "-apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', 'HelveticaNeue-Light', 'Ubuntu', 'Droid Sans', sans-serif",
@@ -225,12 +263,6 @@
 					"type": "number",
 					"default": 1.6,
 					"description": "%backlog.preview.lineHeight.desc%",
-					"scope": "resource"
-				},
-				"backlog.preview.scrollPreviewWithEditorSelection": {
-					"type": "boolean",
-					"default": true,
-					"description": "%backlog.preview.scrollPreviewWithEditorSelection.desc%",
 					"scope": "resource"
 				},
 				"backlog.preview.markEditorSelection": {
@@ -285,29 +317,31 @@
 		"vscode:prepublish": "node ./node_modules/gulp/bin/gulp.js --gulpfile ./gulpfile.js compile"
 	},
 	"dependencies": {
-		"highlight.js": "^9.12.0",
-		"markdown-it": "^8.4.1",
-		"markdown-it-named-headers": "^0.0.4",
-		"vscode-extension-telemetry": "^0.0.17",
-		"vscode-nls": "^3.2.2",
-		"vscode": "^1.1.18"
+		"highlight.js": "^9.12.3",
+		"markdown-it": "^10.0.0",
+		"markdown-it-front-matter": "^0.1.2",
+		"vscode-extension-telemetry": "^0.1.2",
+		"vscode-nls": "^4.1.1"
 	},
 	"devDependencies": {
-		"@types/highlight.js": "^9.12.3",
-		"@types/markdown-it": "^0.0.4",
-		"@types/node": "^10.3.3",
-		"glob": "^7.1.2",
+		"@types/highlight.js": "9.12.3",
+		"@types/lodash.throttle": "^4.1.3",
+		"@types/markdown-it": "0.0.2",
+		"@types/node": "^12.11.7",
+		"event-stream": "^4.0.1",
+		"glob": "^7.1.6",
 		"gulp": "^3.9.1",
-		"gulp-filter": "^5.1.0",
-		"gulp-sourcemaps": "^2.6.4",
+		"gulp-filter": "^6.0.0",
+		"gulp-sourcemaps": "^2.6.5",
 		"gulp-tsb": "^2.0.5",
-		"gulp-tslint": "^8.1.3",
-		"event-stream": "^3.3.4",
-		"rimraf": "^2.6.2",
+		"gulp-tslint": "^8.1.4",
+		"lodash.throttle": "^4.1.1",
+		"rimraf": "^3.0.0",
 		"source-map": "^0.7.3",
-		"tslint": "^5.10.0",
-		"typescript": "^2.9.2",
+		"tslint": "^5.20.1",
+		"typescript": "^3.7.2",
 		"vinyl-fs": "^3.0.3",
-		"vsce": "^1.42.0"
+		"vsce": "^1.69.0",
+		"vscode": "^1.1.36"
 	}
 }
