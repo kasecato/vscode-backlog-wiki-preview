@@ -67,7 +67,7 @@ export class OpenDocumentLinkCommand implements Command {
 	}
 
 	private getViewColumn(resource: vscode.Uri): vscode.ViewColumn {
-		const config = vscode.workspace.getConfiguration('markdown', resource);
+		const config = vscode.workspace.getConfiguration('backlog', resource);
 		const openLinks = config.get<OpenMarkdownLinks>('links.openLocation', OpenMarkdownLinks.currentGroup);
 		switch (openLinks) {
 			case OpenMarkdownLinks.beside:

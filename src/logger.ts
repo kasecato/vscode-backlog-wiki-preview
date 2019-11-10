@@ -28,7 +28,7 @@ function isString(value: any): value is string {
 export class Logger {
 	private trace?: Trace;
 
-	private readonly outputChannel = lazy(() => vscode.window.createOutputChannel('Markdown'));
+	private readonly outputChannel = lazy(() => vscode.window.createOutputChannel('Backlog'));
 
 	constructor() {
 		this.updateConfiguration();

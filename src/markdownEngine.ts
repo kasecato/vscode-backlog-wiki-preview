@@ -100,6 +100,10 @@ export class MarkdownEngine {
 					this.addLineNumberRenderer(md, renderName);
 				}
 
+				for (const renderName of ['thead_open', 'tbody_open']) { // For backlog
+					this.addLineNumberRenderer(md, renderName);
+				}
+
 				this.addImageStabilizer(md);
 				this.addFencedRenderer(md);
 				this.addLinkNormalizer(md);
@@ -174,7 +178,7 @@ export class MarkdownEngine {
 	}
 
 	private getConfig(resource?: vscode.Uri): MarkdownItConfig {
-		const config = vscode.workspace.getConfiguration('markdown', resource);
+		const config = vscode.workspace.getConfiguration('backlog', resource);
 		return {
 			breaks: config.get<boolean>('preview.breaks', false),
 			linkify: config.get<boolean>('preview.linkify', true)
@@ -184,9 +188,11 @@ export class MarkdownEngine {
 	private addLineNumberRenderer(md: any, ruleName: string): void {
 		const original = md.renderer.rules[ruleName];
 		md.renderer.rules[ruleName] = (tokens: any, idx: number, options: any, env: any, self: any) => {
+			const offset = this.getBacklog2MarkdownOffset(tokens, idx); // For backlog
 			const token = tokens[idx];
 			if (token.map && token.map.length) {
-				token.attrSet('data-line', token.map[0]);
+				// token.attrSet('data-line', token.map[0]);
+				token.attrSet('data-line', (token.map[0] - offset).toString()); // For backlog
 				token.attrJoin('class', 'code-line');
 			}
 
@@ -322,6 +328,21 @@ export class MarkdownEngine {
 			}
 			return old_render(tokens, idx, options, env, self);
 		};
+	}
+
+	// For backlog
+	private backlogOffsets: Map<string, number> = new Map([
+		['table_open', 1]
+	]);
+
+	private getBacklog2MarkdownOffset(tokens: Array<Token>, idx: number): number {
+		if (tokens.length === 0) {
+			return 0;
+		}
+		return tokens.slice(0, idx - 1)
+					.filter(token => this.backlogOffsets.has(token.type))
+					.map(token => this.backlogOffsets.get(token.type) as number)
+					.reduce((pv, cv) => pv + cv, 0);
 	}
 }
 

@@ -75,7 +75,7 @@ export class MarkdownContentProvider {
 			<head>
 				<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 				${csp}
-				<meta id="vscode-markdown-preview-data"
+				<meta id="vscode-backlog-preview-data"
 					data-settings="${escapeAttribute(JSON.stringify(initialData))}"
 					data-strings="${escapeAttribute(JSON.stringify(previewStrings))}"
 					data-state="${escapeAttribute(JSON.stringify(state || {}))}">
@@ -147,9 +147,9 @@ export class MarkdownContentProvider {
 
 	private getSettingsOverrideStyles(config: MarkdownPreviewConfiguration): string {
 		return [
-			config.fontFamily ? `--vscode-markdown-font-family: ${config.fontFamily};` : '',
-			isNaN(config.fontSize) ? '' : `--vscode-markdown-font-size: ${config.fontSize}px;`,
-			isNaN(config.lineHeight) ? '' : `--vscode-markdown-line-height: ${config.lineHeight};`,
+			config.fontFamily ? `--vscode-backlog-font-family: ${config.fontFamily};` : '',
+			isNaN(config.fontSize) ? '' : `--vscode-backlog-font-size: ${config.fontSize}px;`,
+			isNaN(config.lineHeight) ? '' : `--vscode-backlog-line-height: ${config.lineHeight};`,
 		].join(' ');
 	}
 

@@ -47,12 +47,12 @@ function registerMarkdownLanguageFeatures(
 	engine: MarkdownEngine
 ): vscode.Disposable {
 	const selector: vscode.DocumentSelector = [
-		{ language: 'markdown', scheme: 'file' },
-		{ language: 'markdown', scheme: 'untitled' }
+		{ language: 'backlog', scheme: 'file' },
+		{ language: 'backlog', scheme: 'untitled' }
 	];
 
 	return vscode.Disposable.from(
-		vscode.languages.setLanguageConfiguration('markdown', {
+		vscode.languages.setLanguageConfiguration('backlog', {
 			wordPattern: new RegExp('(\\p{Alphabetic}|\\p{Number}|\\p{Nonspacing_Mark})+', 'ug'),
 		}),
 		vscode.languages.registerDocumentSymbolProvider(selector, symbolProvider),

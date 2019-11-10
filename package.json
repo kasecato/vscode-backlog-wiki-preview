@@ -79,8 +79,8 @@
 				"title": "%backlog.preview.title%",
 				"category": "Backlog",
 				"icon": {
-					"light": "./media/Preview.svg",
-					"dark": "./media/Preview_inverse.svg"
+					"light": "./media/preview-light.svg",
+					"dark": "./media/preview-dark.svg"
 				}
 			},
 			{
@@ -88,8 +88,8 @@
 				"title": "%backlog.previewSide.title%",
 				"category": "Backlog",
 				"icon": {
-					"light": "./media/PreviewOnRightPane_16x.svg",
-					"dark": "./media/PreviewOnRightPane_16x_dark.svg"
+					"light": "./media/preview-right-light.svg",
+					"dark": "./media/preview-right-dark.svg"
 				}
 			},
 			{
@@ -136,22 +136,22 @@
 				},
 				{
 					"command": "backlog.showSource",
-					"when": "resourceScheme == backlog",
+					"when": "editorLangId == backlog",
 					"group": "navigation"
 				},
 				{
 					"command": "backlog.preview.refresh",
-					"when": "resourceScheme == backlog",
+					"when": "editorLangId == backlog",
 					"group": "1_backlog"
 				},
 				{
 					"command": "backlog.preview.toggleLock",
-					"when": "backlogPreviewFocus",
+					"when": "editorLangId == backlog",
 					"group": "1_backlog"
 				},
 				{
 					"command": "backlog.showPreviewSecuritySelector",
-					"when": "backlogPreviewFocus",
+					"when": "editorLangId == backlog",
 					"group": "1_backlog"
 				}
 			],
@@ -187,7 +187,7 @@
 				},
 				{
 					"command": "backlog.showSource",
-					"when": "backlogPreviewFocus",
+					"when": "editorLangId == backlog",
 					"group": "navigation"
 				},
 				{
@@ -196,11 +196,11 @@
 				},
 				{
 					"command": "backlog.showPreviewSecuritySelector",
-					"when": "backlogPreviewFocus"
+					"when": "editorLangId == backlog"
 				},
 				{
 					"command": "backlog.preview.toggleLock",
-					"when": "backlogPreviewFocus"
+					"when": "editorLangId == backlog"
 				},
 				{
 					"command": "backlog.preview.refresh",
@@ -208,10 +208,6 @@
 				},
 				{
 					"command": "backlog.preview.refresh",
-					"when": "backlogPreviewFocus"
-				},
-				{
-					"command": "backlog.convertToMarkdown",
 					"when": "editorLangId == backlog"
 				}
 			]
@@ -230,12 +226,6 @@
 				"when": "editorLangId == backlog"
 			}
 		],
-		"snippets": [
-			{
-				"language": "backlog",
-				"path": "./snippets/backlog.json"
-			}
-		],
 		"configuration": {
 			"type": "object",
 			"title": "Backlog",
@@ -243,13 +233,28 @@
 			"properties": {
 				"backlog.styles": {
 					"type": "array",
+					"items": {
+						"type": "string"
+					},
 					"default": [],
 					"description": "%backlog.styles.dec%",
 					"scope": "resource"
 				},
+				"backlog.preview.breaks": {
+					"type": "boolean",
+					"default": false,
+					"description": "%backlog.preview.breaks.desc%",
+					"scope": "resource"
+				},
+				"backlog.preview.linkify": {
+					"type": "boolean",
+					"default": true,
+					"description": "%backlog.preview.linkify%",
+					"scope": "resource"
+				},
 				"backlog.preview.fontFamily": {
 					"type": "string",
-					"default": "-apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', 'HelveticaNeue-Light', 'Ubuntu', 'Droid Sans', sans-serif",
+					"default": "-apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', 'Ubuntu', 'Droid Sans', sans-serif",
 					"description": "%backlog.preview.fontFamily.desc%",
 					"scope": "resource"
 				},
@@ -263,6 +268,12 @@
 					"type": "number",
 					"default": 1.6,
 					"description": "%backlog.preview.lineHeight.desc%",
+					"scope": "resource"
+				},
+				"backlog.preview.scrollPreviewWithEditor": {
+					"type": "boolean",
+					"default": true,
+					"description": "%backlog.preview.scrollPreviewWithEditor.desc%",
 					"scope": "resource"
 				},
 				"backlog.preview.markEditorSelection": {
@@ -282,6 +293,34 @@
 					"default": true,
 					"description": "%backlog.preview.doubleClickToSwitchToEditor.desc%",
 					"scope": "resource"
+				},
+				"backlog.preview.openMarkdownLinks": {
+					"type": "string",
+					"default": "inPreview",
+					"description": "%configuration.backlog.preview.openMarkdownLinks.description%",
+					"scope": "resource",
+					"enum": [
+						"inPreview",
+						"inEditor"
+					],
+					"enumDescriptions": [
+						"%configuration.backlog.preview.openMarkdownLinks.inPreview%",
+						"%configuration.backlog.preview.openMarkdownLinks.inEditor%"
+					]
+				},
+				"backlog.links.openLocation": {
+					"type": "string",
+					"default": "currentGroup",
+					"description": "%configuration.backlog.links.openLocation.description%",
+					"scope": "resource",
+					"enum": [
+						"currentGroup",
+						"beside"
+					],
+					"enumDescriptions": [
+						"%configuration.backlog.links.openLocation.currentGroup%",
+						"%configuration.backlog.links.openLocation.beside%"
+					]
 				},
 				"backlog.trace": {
 					"type": "string",
@@ -305,6 +344,25 @@
 			{
 				"fileMatch": "package.json",
 				"url": "./schemas/package.schema.json"
+			}
+		],
+		"backlog.previewStyles": [
+			"./media/backlog.css",
+			"./media/highlight.css"
+		],
+		"backlog.previewScripts": [
+			"./media/index.js"
+		],
+		"webviewEditors": [
+			{
+				"viewType": "vscode.backlog.preview.editor",
+				"displayName": "(Experimental) VS Code Backlog Preview",
+				"priority": "option",
+				"selector": [
+					{
+						"filenamePattern": "*.bl"
+					}
+				]
 			}
 		]
 	},

@@ -521,7 +521,7 @@ export class DynamicMarkdownPreview extends Disposable {
 			hrefPath = path.join(path.dirname(this.resource.path), hrefPath);
 		}
 
-		const config = vscode.workspace.getConfiguration('markdown', this.resource);
+		const config = vscode.workspace.getConfiguration('backlog', this.resource);
 		const openLinks = config.get<string>('preview.openMarkdownLinks', 'inPreview');
 		if (openLinks === 'inPreview') {
 			const markdownLink = await resolveLinkToMarkdownFile(hrefPath);

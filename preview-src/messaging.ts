@@ -2,7 +2,7 @@ import { getSettings } from './settings';
 
 export interface MessagePoster {
 	/**
-	 * Post a message to the markdown extension
+	 * Post a message to the backlog extension
 	 */
 	postMessage(type: string, body: object): void;
 }

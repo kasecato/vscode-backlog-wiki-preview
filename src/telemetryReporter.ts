@@ -48,7 +48,7 @@ export function loadDefaultTelemetryReporter(): TelemetryReporter {
 }
 
 function getPackageInfo(): IPackageInfo | null {
-	const extention = vscode.extensions.getExtension('Microsoft.vscode-markdown');
+	const extention = vscode.extensions.getExtension('Microsoft.vscode-backlog');
 	if (extention && extention.packageJSON) {
 		return {
 			name: extention.packageJSON.name,

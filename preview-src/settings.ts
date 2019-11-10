@@ -12,7 +12,7 @@ export interface PreviewSettings {
 let cachedSettings: PreviewSettings | undefined = undefined;
 
 export function getData<T = {}>(key: string): T {
-	const element = document.getElementById('vscode-markdown-preview-data');
+	const element = document.getElementById('vscode-backlog-preview-data');
 	if (element) {
 		const data = element.getAttribute(key);
 		if (data) {
