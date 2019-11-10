@@ -1,15 +1,18 @@
+import { Command } from '../commandManager';
 import * as vscode from 'vscode';
 import * as path from 'path';
 
 import { BacklogEngine } from '../backlogEngine';
 
-export class Converter {
+export class ConvertToMarkdownCommand implements Command {
+
+	public readonly id = 'backlog.convertToMarkdown';
 
 	public constructor(
 		private readonly engine: BacklogEngine
 	) { }
 
-	public async convertBacklogToMarkdown() {
+	public async execute() {
 
 		let editor = vscode.window.activeTextEditor;
 		if (!editor) {

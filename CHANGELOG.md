@@ -1,5 +1,8 @@
 # Change Log
 
+## 0.0.6 (November 10, 2019)
+* bug fix - Fixed an issue that preview is not available
+
 ## 0.0.5 (June 17, 2018)
 * bug fix - Fixed an issue that quotes becomes quotes after a new line
 
