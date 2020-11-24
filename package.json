@@ -375,7 +375,7 @@
 		"vscode:prepublish": "node ./node_modules/gulp/bin/gulp.js --gulpfile ./gulpfile.js compile"
 	},
 	"dependencies": {
-		"highlight.js": "^9.12.3",
+		"highlight.js": "^10.1.2",
 		"markdown-it": "^10.0.0",
 		"markdown-it-front-matter": "^0.1.2",
 		"vscode-extension-telemetry": "^0.1.2",
