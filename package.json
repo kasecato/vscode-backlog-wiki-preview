@@ -388,7 +388,7 @@
 		"@types/node": "^12.11.7",
 		"event-stream": "^4.0.1",
 		"glob": "^7.1.6",
-		"gulp": "^3.9.1",
+		"gulp": "^4.0.2",
 		"gulp-filter": "^6.0.0",
 		"gulp-sourcemaps": "^2.6.5",
 		"gulp-tsb": "^2.0.5",
